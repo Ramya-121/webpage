@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <center><title>Camera</title></center>
+   <style>
+    body {
+        
+        background-image:url("vlsi.jpg");
+        background-size:cover;
+        
+    }
+    h1{
+        color:white;
+    }
+    h2{
+        color:rgb(221, 43, 177);
+    }
+   .box
+   {
+    border:5px solid black;
+    color:white;
+    padding: 5px;
+    display:inline;
+    font-weight: bold;
+   }
+   button{
+    border-radius: 10px;
+   }
+   .box1{
+    
+    border:5px dotted white;
+    background-color: black;
+    padding-right: 5%;
+    margin-left: 75%;
+    margin-right: 5%;
+    bottom: 0px;
+    text-align: right;
+    align-items: end;
+   }
+   .name{
+   
+    color:white;
+   }
+   </style>
+</head>
+    <body>
+        <br>
+        <center><h1 class="box"> WEB CAMERA </center></h1>
+        <br>
+        <br>
+    <center>
+    <label class="box">PHOTOS WILL BE SHARED IN A DOCUMENT FORM </label></center>
+
+    <div id="video-container">
+        <video id="video" autoplay></video>
+    </div>
+    <br>
+    <center>
+    <button id="start-button" style="background-color: cornsilk;">Start Webcam</button>
+    <br>
+    <br>
+    <br>
+    <button id="stop-button" style="background-color: cornsilk;">Stop Webcam</button>
+    <br>
+    <br>
+    <br>
+    <button id="capture-button" style="background-color: cornsilk;">Capture Image</button>
+    <br>
+    <br>
+    <br>
+   <button><img id="captured-image" style="background-color: cornsilk;" src="load.png"alt="Captured Image" height="10px" width="10px">Captured Image </button> 
+    </center>
+
+    <script>
+        const videoElement = document.getElementById('video');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+        const captureButton = document.getElementById('capture-button');
+        const capturedImage = document.getElementById('captured-image');
+
+        startButton.addEventListener('click', startWebcam);
+        stopButton.addEventListener('click', stopWebcam);
+        captureButton.addEventListener('click', captureImage);
+
+        let stream = null;
+
+        async function startWebcam() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                videoElement.srcObject = stream;
+                startButton.style.display = 'none';
+                stopButton.style.display = 'inline-block';
+                captureButton.style.display = 'inline-block';
+            } catch (error) {
+                console.error('Error accessing webcam:', error);
+            }
+        }
+
+        function stopWebcam() {
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                videoElement.srcObject = null;
+            }
+
+            startButton.style.display = 'inline-block';
+            stopButton.style.display = 'none';
+            captureButton.style.display = 'none';
+            capturedImage.style.display = 'none';
+        }
+        function captureImage() {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+            const dataURL = canvas.toDataURL('image/png');
+            capturedImage.src = dataURL;
+            capturedImage.style.display = 'block';
+        }
+        
+    </script>
+<div class="box1">
+<h2 class="name">PULLA RAMYA CHARITHA</h2>
+<h2 class="name">111621104121</h2>
+<h2 class="name">ECE - 'B'</h2>
+</div>
+</body>
+
+</html>
